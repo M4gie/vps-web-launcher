@@ -1,0 +1,19 @@
+[web]
+127.0.0.1:2222
+
+[web:vars]
+user=maji
+group=docker
+
+acme_email=contact@m4gie.com
+
+traefik_dashboard_url=dashboard.domain.com
+traefik_dir=/home/{{ user }}/docker/traefik
+
+watchtower_interval=60
+watchtower_dir=/home/{{ user }}/docker/watchtower
+
+init_user_pubkey=ssh_key
+
+#ansible_ssh_private_key_file=./key.pem
+#ansible_user=vagrant

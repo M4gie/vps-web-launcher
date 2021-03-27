@@ -1,0 +1,9 @@
+---
+- name: Provisionning webservers group
+  hosts: web
+  become: yes
+  roles:
+    - { role: "init", tags: init }
+    - { role: "docker", tags: docker }
+    - { role: "traefik", tags: traefik }
+    - { role: "watchtower", tags: watchtower }

@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    restart: unless-stopped
+    command: --interval {{watchtower_interval}} --label-enable --cleanup
+    labels:
+      - "traefik.enable=false"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

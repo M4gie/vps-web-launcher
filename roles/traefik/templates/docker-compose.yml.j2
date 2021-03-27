@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:2.4
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - "{{ traefik_dir }}/traefik.toml:/etc/traefik/traefik.toml"
+      - "{{ traefik_dir }}/acme.json:/acme.json"
+    labels:
+      traefik.http.routers.http-catchall.rule: hostregexp(`{host:.+}`)
+      traefik.http.routers.http-catchall.entrypoints: insecure
+      traefik.http.routers.http-catchall.middlewares: redirect-to-https@docker
+      traefik.http.middlewares.redirect-to-https.redirectscheme.scheme: https
+    networks:
+      - web
+
+  whoami:
+    image: containous/whoami
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=web
+      - traefik.http.routers.api-https.entrypoints=secure
+      - traefik.http.routers.api-https.rule=Host(`api.majy.me`)
+      - traefik.http.routers.api-https.tls=true
+      - traefik.http.routers.api-https.tls.certresolver=letsencrypt
+    networks:
+      - web
+
+networks:
+  web:
+    external: true

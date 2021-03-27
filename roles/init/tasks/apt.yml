@@ -1,0 +1,4 @@
+---
+- name: Install base packages
+  apt:
+    name: ['aptitude', 'cron', 'curl', 'git', 'zsh']

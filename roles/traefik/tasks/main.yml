@@ -1,0 +1,34 @@
+---
+- name: Ensures traefik dir exists
+  file:
+    path: "{{ traefik_dir }}"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ group }}"
+
+- name: Ensures acme.json file exists
+  file:
+    path: "{{ traefik_dir }}/acme.json"
+    state: touch
+    mode: 0600
+    owner: "{{ user }}"
+    group: "{{ group }}"
+
+- name: Adding traefik.toml file
+  template:
+    src: traefik.toml.j2
+    dest: "{{ traefik_dir }}/traefik.toml"
+    mode: 0600
+    owner: "{{ user }}"
+    group: "{{ group }}"
+
+- name: Adding docker-compose.yml file
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ traefik_dir }}/docker-compose.yml"
+    mode: 0600
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    
+- name: Create the web network
+  shell: docker network create web

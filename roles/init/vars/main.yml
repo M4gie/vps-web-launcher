@@ -1,0 +1,6 @@
+---
+oh_my_zsh_install: yes
+oh_my_zsh_theme: 'af-magic'
+users:
+  - username: "root"
+  - username: "{{ user }}"
